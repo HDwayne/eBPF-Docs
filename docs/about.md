@@ -58,10 +58,10 @@ Le fichier ELF passe ensuite par un compilateur JIT ( Just in time ) qui le tran
 
 ## Maps eBPF 
 
-les maps eBPF sont des structures de données utilisés par les programmes eBPF pour communiquer des informations à d'autres programmes. En effet, une map peut être lue et modifiée par d'autres programmes eBPF ainsi que des programmes côté utilisateur via un appel système. Cela permet de partager des données entre plusieurs programme eBPF ou encore de rendre visible les résultats de l'exécution d'un programme eBPF à un programme s'exécutant en dehors du noyau. 
 
+Les maps eBPF sont des structures de données utilisés par les programmes eBPF.  Elles servent principalement à stocker et à partager des données entre l'espace utilisateur et l'espace noyau, ainsi qu'entre différentes instances de programmes eBPF ( les autres programmes eBPF peuvent y accéder ainsi que les programmes en dehors du noyau grâce à des appels système ). Pusqu'il peut y avoir des accès concurrent, les opérations sur les map sont atomiques pour préserver la cohérence des données. 
 
-Une autre propriété intéréssante 
+Elle sont également utilisé pour stocker de l'information de manière persistante ( contexte d'exécution etc..) qui pourra être réutilisé par d'autres programmes ou par le même programme dans le futur.
 
 ## Installation
 /*TODO*/ (bpftool libbpf , llvm, clang )
