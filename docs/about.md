@@ -2,7 +2,7 @@
 
 # Qu'est-ce qu'eBPF ? 
 
-eBPF, ou extended Berkeley Packet Filter, est une technologie qui permet d'exécuter du code de manière sécurisée dans le noyau d'un système d'exploitation ( Windows ou linux ). Initialement développé pour filtrer des paquets réseau, BPF a évolué en eBPF pour devenir une infrastructure plus générale permettant d'injecter et d'exécuter du code plus complexe et plus diversifié.
+eBPF, ou extended Berkeley Packet Filter, est une technologie qui permet d'exécuter du code de manière sécurisée dans le noyau d'un système d'exploitation ( Windows ou linux ). Initialement développé pour filtrer des paquets réseau, BPF a évolué en eBPF pour devenir une technologie plus générale permettant d'injecter et d'exécuter du code plus complexe et plus diversifié.
 
 
 
@@ -37,21 +37,23 @@ En plus d'être obligatoirement écrite en C, cette partie du code est extrêmem
 Ces contraintes sont garantie d'être respecté par le vérifieur eBPF ( voir partie Compilation et exécution)
 
 
-## Compilation et exécution
+## Compilation et Vérification
 
-Le code eBPF nécéssite certaines opérations avant d'être injecté au sein du kernel. La première étape est de compiler le programme eBPF sous forme de bytecode ( ELF ) car c'est le type de fichier qui est attendu par le kernel. 
+Le code eBPF nécéssite certaines opérations avant d'être injecté au sein du kernel. La première étape est de le compiler sous forme de bytecode ( ELF ) car c'est le type de fichier qui est attendu par le kernel. 
 
 ![im1](https://ebpf.io/static/a7160cd231b062b321f2a479a4d0848f/9180b/clang.png "compilation d'un programme eBPF en fichier ELF")
 
-Clang et GCC depuis la version 10 supporte la compilation des fichiers eBPF.
+Clang et GCC (depuis la version 10) supporte la compilation des fichiers eBPF.
 
 
 
-
+Par la suite, le fichier ELF passe par un vérifieur qui garantie que le programme tournera correctement au sein du kernel ( le but étant de garantir l'absence de potentiel crashs ou blocages du programme durant son exécution au sein du kernel. Sans cela, exécuter un programme eBPF serait extrêmement risqué ). 
 
 ![im2](https://ebpf.io/static/7eec5ccd8f6fbaf055256da4910acd5a/b5f15/loader.png "Processus d'exécution d'un programme eBPF: de la vérification à l'injection au sein du kernel")
 
-*TODO*
+
+Le fichier ELF passe ensuite par un compilateur JIT ( Just in time ) qui le transforme en instruction Assembleur ( spécifique à l'architecture de la machine sur laquelle est le fichier, dans l'exemple c'est x86_64 ). Enfin le programme est attaché à l'événement système qui lui a été associé.
+
 
 
 ## Maps eBPF 
@@ -63,6 +65,9 @@ Clang et GCC depuis la version 10 supporte la compilation des fichiers eBPF.
 
 
 ## Sources
+
+ebpf.io ( pour les images ) : https://ebpf.io/
+
 
 
 
