@@ -39,7 +39,7 @@ Ces contraintes sont garantie d'être respecté par le vérifieur eBPF ( voir pa
 
 ## Compilation et Vérification
 
-Le code eBPF nécéssite certaines opérations avant d'être injecté au sein du kernel. La première étape est de le compiler sous forme de bytecode ( ELF ) car c'est le type de fichier qui est attendu par le kernel. 
+Le code eBPF nécéssite certaines opérations avant d'être injecté au sein du kernel. La première étape est de compiler le fichier sous forme de bytecode ( ELF ) car c'est le type de fichier qui est attendu par le kernel. 
 
 ![im1](https://ebpf.io/static/a7160cd231b062b321f2a479a4d0848f/9180b/clang.png "compilation d'un programme eBPF en fichier ELF")
 
@@ -47,18 +47,21 @@ Clang et GCC (depuis la version 10) supporte la compilation des fichiers eBPF.
 
 
 
-Par la suite, le fichier ELF passe par un vérifieur qui garantie que le programme tournera correctement au sein du kernel ( le but étant de garantir l'absence de potentiel crashs ou blocages du programme durant son exécution au sein du kernel. Sans cela, exécuter un programme eBPF serait extrêmement risqué ). 
+Par la suite, le fichier ELF passe par un vérifieur qui garantie que le programme tournera correctement au sein du kernel ( le but étant de garantir l'absence de potentiel crashs ou blocages du programme durant son exécution et d'assurer qu'il n'y ait aucune faille de sécurité. Sans cela, exécuter un programme eBPF serait extrêmement risqué ). 
 
 ![im2](https://ebpf.io/static/7eec5ccd8f6fbaf055256da4910acd5a/b5f15/loader.png "Processus d'exécution d'un programme eBPF: de la vérification à l'injection au sein du kernel")
 
 
-Le fichier ELF passe ensuite par un compilateur JIT ( Just in time ) qui le transforme en instruction Assembleur ( spécifique à l'architecture de la machine sur laquelle est le fichier, dans l'exemple c'est x86_64 ). Enfin le programme est attaché à l'événement système qui lui a été associé.
+Le fichier ELF passe ensuite par un compilateur JIT ( Just in time ) qui le transforme en instruction Assembleur ( spécifique à l'architecture de la machine sur laquelle est le fichier ). Enfin le programme est attaché à l'événement système qui lui a été associé. 
 
 
 
 ## Maps eBPF 
 
-*TODO*
+les maps eBPF sont des structures de données utilisés par les programmes eBPF pour communiquer des informations à d'autres programmes. En effet, une map peut être lue et modifiée par d'autres programmes eBPF ainsi que des programmes côté utilisateur via un appel système. Cela permet de partager des données entre plusieurs programme eBPF ou encore de rendre visible les résultats de l'exécution d'un programme eBPF à un programme s'exécutant en dehors du noyau. 
+
+
+Une autre propriété intéréssante 
 
 ## Installation
 /*TODO*/ (bpftool libbpf , llvm, clang )
@@ -67,6 +70,8 @@ Le fichier ELF passe ensuite par un compilateur JIT ( Just in time ) qui le tran
 ## Sources
 
 ebpf.io ( pour les images ) : https://ebpf.io/
+
+
 
 
 
