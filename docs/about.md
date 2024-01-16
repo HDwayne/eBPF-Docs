@@ -34,7 +34,7 @@ En plus d'être obligatoirement écrite en C, cette partie du code est extrêmem
 
 - le processus qui injecte le code eBPF dans le kernel doit posséder les privilèges nécéssaires. 
 
-Ces contraintes sont garantie d'être respecté par le vérifieur eBPF ( voir partie Compilation et exécution)
+Ces contraintes sont garantie d'être respecté par le vérifieur eBPF ( voir partie Compilation et vérification )
 
 
 ## Compilation et Vérification
@@ -52,7 +52,7 @@ Par la suite, le fichier ELF passe par un vérifieur qui garantie que le program
 ![im2](https://ebpf.io/static/7eec5ccd8f6fbaf055256da4910acd5a/b5f15/loader.png "Processus d'exécution d'un programme eBPF: de la vérification à l'injection au sein du kernel")
 
 
-Le fichier ELF passe ensuite par un compilateur JIT ( Just in time ) qui le transforme en instruction Assembleur ( spécifique à l'architecture de la machine sur laquelle est le fichier ). Enfin le programme est attaché à l'événement système qui lui a été associé. 
+Le fichier ELF passe ensuite par un compilateur JIT ( Just in time ) qui le transforme en instruction Assembleur ( spécifique à l'architecture de la machine sur laquelle est le fichier ). Enfin le programme est rattaché à l'événement système qui lui a été associé. 
 
 
 
@@ -61,10 +61,40 @@ Le fichier ELF passe ensuite par un compilateur JIT ( Just in time ) qui le tran
 
 Les maps eBPF sont des structures de données utilisés par les programmes eBPF.  Elles servent principalement à stocker et à partager des données entre l'espace utilisateur et l'espace noyau, ainsi qu'entre différentes instances de programmes eBPF ( les autres programmes eBPF peuvent y accéder ainsi que les programmes en dehors du noyau grâce à des appels système ). Pusqu'il peut y avoir des accès concurrent, les opérations sur les map sont atomiques pour préserver la cohérence des données. 
 
-L'information est stockée de manière persistante, ce qui permet d'y accéder, peut importe si le programme ayant créer la map est encore entrain d'être exécuté ou non ( sauf si on choisit volontairement de la détruire )
+L'information est stockée de manière persistante, ce qui permet d'y accéder en tout temps.
+
+## Evénements 
+
+Chaque programmes eBPF doit être rattaché à un "événement" au sein du noyau. Lorsque cet "événement" survient le programme eBPF est exécuté. Il existe multitude d'événements de différents types:
+
+- Les programmes eBPF peuvent être rattaché à des événements en lien avec l'arrivée et le traitement de paquets réseaux à l'aide du sous-système XDP (eXpress Data Path). ils peuvent également être associés aux événéments liés à la gestion du trafic réseau. 
+
+- Les programmes eBPF peuvent être attachés à certains endroits spécifiques du noyau (tracepoints) pour collecter des informations de traçage en temps réel, permettant ainsi une analyse détaillée de l'exécution du système.
+
+-  Les programmes eBPF peuvent être attachés aux points d'entrée ou de sortie de fonctions du noyau, permettant ainsi de créer des sondes de système (Kprobes) pour le débogage, la surveillance et d'autres tâches.
+
+- Les programmes eBPF peuvent être rattaché au module de sécurité linux (LSM) et influés sur le comportement du kernel. 
+
+- et bien plus encore.....
+
+
+
+
+
+
+
 
 ## Installation
-/*TODO*/ (bpftool libbpf , llvm, clang )
+
+Les outils et librairies qui seront principalement utilisés lors du projet sont :
+
+bpftool : https://github.com/libbpf/bpftool
+
+libbpf : https://github.com/libbpf/libbpf
+
+llvm / clang : https://github.com/llvm/llvm-project (déjà présent sur la majorité des distributions linux)
+
+il est également possible d'utiliser GCC à la place de clang  : https://github.com/gcc-mirror/gcc
 
 
 ## Sources
