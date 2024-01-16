@@ -69,19 +69,13 @@ Chaque programmes eBPF doit être rattaché à un "événement" au sein du noyau
 
 - Les programmes eBPF peuvent être rattaché à des événements en lien avec l'arrivée et le traitement de paquets réseaux à l'aide du sous-système XDP (eXpress Data Path). ils peuvent également être associés aux événéments liés à la gestion du trafic réseau. 
 
-- Les programmes eBPF peuvent être attachés à certains endroits spécifiques du noyau (tracepoints) pour collecter des informations de traçage en temps réel, permettant ainsi une analyse détaillée de l'exécution du système.
+- Les programmes eBPF peuvent être attachés à certains endroits spécifiques du noyau (tracepoints) pour collecter des informations en temps réel, permettant ainsi une analyse détaillée de l'exécution du système.
 
 -  Les programmes eBPF peuvent être attachés aux points d'entrée ou de sortie de fonctions du noyau, permettant ainsi de créer des sondes de système (Kprobes) pour le débogage, la surveillance et d'autres tâches.
 
 - Les programmes eBPF peuvent être rattaché au module de sécurité linux (LSM) et influés sur le comportement du kernel. 
 
 - et bien plus encore.....
-
-
-
-
-
-
 
 
 ## Installation
