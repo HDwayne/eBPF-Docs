@@ -7,6 +7,7 @@ theme:
     - navigation.expand
     - navigation.path
     - navigation.indexes
+    - content.code.copy
   language: en
   palette:
     - media: "(prefers-color-scheme)"
@@ -26,6 +27,9 @@ theme:
 
 repo_url: https://github.com/HDwayne/eBPF-Docs
 repo_name: eBPF-Docs
+
+extra_css:
+  - stylesheets/extra.css
 
 markdown_extensions:
   - admonition
@@ -58,6 +62,15 @@ markdown_extensions:
   - def_list
   - pymdownx.tasklist:
       custom_checkbox: true
+
+nav:
+  - Welcome: 'index.md'
+  - Qu'est-ce qu'eBPF ?:
+    - Introduction: 'introduction.md'
+    - Examples: 'examples.md'
+    - Installation:
+      - WSL2: 'installation/wsl2.md'
+  
 
 copyright: |
   &copy; 2024 <a href="https://github.com/HDwayne"  target="_blank" rel="noopener">Dwayne HERZBERG</a>,

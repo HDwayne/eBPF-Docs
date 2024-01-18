@@ -1,5 +1,3 @@
-
-
 # Qu'est-ce qu'eBPF ? 
 
 eBPF, ou extended Berkeley Packet Filter, est une technologie qui permet d'exécuter du code de manière sécurisée dans le noyau d'un système d'exploitation ( Windows ou linux ). Initialement développé pour filtrer des paquets réseau, BPF a évolué en eBPF pour devenir une technologie plus générale permettant d'injecter et d'exécuter du code plus complexe et plus diversifié.
