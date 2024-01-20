@@ -6,7 +6,7 @@ eBPF, or extended Berkeley Packet Filter, is a technology that enables secure ex
 
 # Operation
 
-## eBPF programs structure
+## eBPF program structure
 
 In most cases, the use of eBPF technology revolves around two types of programs:
 
