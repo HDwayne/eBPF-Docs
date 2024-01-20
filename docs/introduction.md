@@ -21,8 +21,7 @@ This is the actual BPF code injected into the kernel. This code is often referre
 
 In addition to being necessarily written in C, this part of the code is extremely constrained due to its execution within the kernel. For example:
 
-- These programs cannot use uninitialized 
-- variables or access memory beyond limits.
+- These programs cannot use uninitialized variables or access memory beyond limits.
 - These programs must have a size allowing them to be injected into the kernel.
 - They must have finite complexity.
 - They must not be able to block in any way (infinite loops, etc.).
