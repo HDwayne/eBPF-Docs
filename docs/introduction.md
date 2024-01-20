@@ -1,97 +1,76 @@
-# Qu'est-ce qu'eBPF ? 
+# What is eBPF ? 
 
-eBPF, ou extended Berkeley Packet Filter, est une technologie qui permet d'exécuter du code de manière sécurisée dans le noyau d'un système d'exploitation ( Windows ou linux ). Initialement développé pour filtrer des paquets réseau, BPF a évolué en eBPF pour devenir une technologie plus générale permettant d'injecter et d'exécuter du code plus complexe et plus diversifié.
+eBPF, or extended Berkeley Packet Filter, is a technology that enables secure execution of code within the kernel of an operating system (Windows or Linux). Initially developed for network packet filtering, BPF evolved into eBPF to become a more general technology capable of injecting and executing more complex and diversified code.
 
 
 
-# Fonctionnement 
+# Operation
 
-## Structure des programmes eBPF
+## eBPF programs structure
 
-Dans la majorité des cas, l'utilisation de la technologie eBPF s'articule autour de 2 types de programmes :
+In most cases, the use of eBPF technology revolves around two types of programs:
 
 ### User-space program :
-C'est le code qui s'exécute dans l'espace utilisateur ( donc en dehors du noyau ) . Ce programme est responsable de la gestion et de l'interaction avec le code eBPF injecté dans le noyau. Il peut être utilisé pour injecter/retirer le code eBPF, récupérer des résultats via les maps eBPF etc...
+This is the code that runs in user space (outside the kernel). This program is responsible for managing and interacting with the eBPF code injected into the kernel. It can be used to inject/remove eBPF code, retrieve results via eBPF maps, etc.
 
-Cette partie du code est généralement écrite en C, mais il est possible d'utilisé des API permettant l'utilisation d'un langage avec une plus haute abstraction comme BCC ( BPF compile collection qui utilise Python ) ou encore eBPF-GO ( qui utilise le Go ). En C, certaines librairies existent pour faciliter l'écriture de cette partie du programme comme libbpf. 
+This part of the code is typically written in C, but APIs that allow the use of higher-level languages such as BCC (BPF Compile Collection, which uses Python) or eBPF-GO (which uses Go) can also be utilized. In C, some libraries exist to facilitate the writing of this part of the program, such as libbpf.
 
 ### Kernel space program :
 
-C'est le code BPF proprement dit qui est injecté dans le noyau. Ce code est souvent appelé "eBPF program" ou "kernel space program". 
-Il peut être injecté dynamiquement dans le noyau et exécuté en réponse à certains événements, tels que l'arrivée de paquets réseau ou l'appel d'une commande système par un processus par exemple. 
+This is the actual BPF code injected into the kernel. This code is often referred to as "eBPF program" or "kernel space program." It can be dynamically injected into the kernel and executed in response to certain events, such as the arrival of network packets or the invocation of a system command by a process.
 
-En plus d'être obligatoirement écrite en C, cette partie du code est extrêmement contrainte de part le fait qu'elle est exécutée au sein du noyau. Par exemple :
-    
-- ces programmes ne peuvent pas utiliser de variables non initialisées ou accéder à la mémoire hors limites.
+In addition to being necessarily written in C, this part of the code is extremely constrained due to its execution within the kernel. For example:
 
-- ces programmes doivent une taille permettant de les injecter au sein du kernel 
+- These programs cannot use uninitialized 
+- variables or access memory beyond limits.
+- These programs must have a size allowing them to be injected into the kernel.
+- They must have finite complexity.
+- They must not be able to block in any way (infinite loops, etc.).
+- The process injecting the eBPF code into the kernel must have the necessary privileges.
 
-- ils doivent avoir une complexité finie
-
-- ils ne doivent pas pouvoir se bloquer de quelques manières que ce soit ( boucles infinies etc.. )
-
-- le processus qui injecte le code eBPF dans le kernel doit posséder les privilèges nécéssaires. 
-
-Ces contraintes sont garantie d'être respecté par le vérifieur eBPF ( voir partie Compilation et vérification )
+These constraints are ensured to be respected by the eBPF verifier (see Compilation and Verification section).
 
 
-## Compilation et Vérification
+## Compilation and verification
 
-Le code eBPF nécéssite certaines opérations avant d'être injecté au sein du kernel. La première étape est de compiler le fichier sous forme de bytecode ( ELF ) car c'est le type de fichier qui est attendu par le kernel. 
+
+The eBPF code requires certain operations before being injected into the kernel. The first step is to compile the file into bytecode (ELF format) because this is the file type expected by the kernel.
 
 ![im1](https://ebpf.io/static/a7160cd231b062b321f2a479a4d0848f/9180b/clang.png "compilation d'un programme eBPF en fichier ELF")
 
-Clang et GCC (depuis la version 10) supporte la compilation des fichiers eBPF.
+Clang and GCC (since version 10) support the compilation of eBPF files.
 
-
-
-Par la suite, le fichier ELF passe par un vérifieur qui garantie que le programme tournera correctement au sein du kernel ( le but étant de garantir l'absence de potentiel crashs ou blocages du programme durant son exécution et d'assurer qu'il n'y ait aucune faille de sécurité. Sans cela, exécuter un programme eBPF serait extrêmement risqué ). 
+Subsequently, the ELF file undergoes a verifier that ensures the program will run correctly within the kernel. The purpose is to guarantee the absence of potential crashes or program blockages during its execution and to ensure that there are no security vulnerabilities. Without this verification, running an eBPF program would be extremely risky.
 
 ![im2](https://ebpf.io/static/7eec5ccd8f6fbaf055256da4910acd5a/b5f15/loader.png "Processus d'exécution d'un programme eBPF: de la vérification à l'injection au sein du kernel")
 
 
-Le fichier ELF passe ensuite par un compilateur JIT ( Just in time ) qui le transforme en instruction Assembleur ( spécifique à l'architecture de la machine sur laquelle est le fichier ). Enfin le programme est rattaché à l'événement système qui lui a été associé. 
+The ELF file then goes through a Just-in-Time (JIT) compiler that transforms it into Assembly language instructions (specific to the machine architecture on which the file is located). Finally, the program is attached to the system event with which it has been associated.
 
 
 
-## Maps eBPF 
+## eBPF maps 
 
 
-Les maps eBPF sont des structures de données utilisés par les programmes eBPF.  Elles servent principalement à stocker et à partager des données entre l'espace utilisateur et l'espace noyau, ainsi qu'entre différentes instances de programmes eBPF ( les autres programmes eBPF peuvent y accéder ainsi que les programmes en dehors du noyau grâce à des appels système ). Pusqu'il peut y avoir des accès concurrent, les opérations sur les map sont atomiques pour préserver la cohérence des données. 
+eBPF maps are data structures used by eBPF programs. They primarily serve to store and share data between user space and kernel space, as well as between different instances of eBPF programs (other eBPF programs can access them, as well as programs outside the kernel through system calls). Since there can be concurrent access, map operations are atomic to preserve data coherence.
 
-L'information est stockée de manière persistante, ce qui permet d'y accéder en tout temps.
+Information is stored persistently, allowing access at any time.
 
-## Evénements 
+## Events 
 
-Chaque programmes eBPF doit être rattaché à un "événement" au sein du noyau. Lorsque cet "événement" survient le programme eBPF est exécuté. Il existe multitude d'événements de différents types:
+Each eBPF program must be attached to an "event" within the kernel. When this "event" occurs, the eBPF program is executed. There are numerous events of different types:
 
-- Les programmes eBPF peuvent être rattaché à des événements en lien avec l'arrivée et le traitement de paquets réseaux à l'aide du sous-système XDP (eXpress Data Path). ils peuvent également être associés aux événéments liés à la gestion du trafic réseau. 
+- eBPF programs can be attached to events related to the arrival and processing of network packets using the eXpress Data Path (XDP) subsystem. They can also be associated with events related to network traffic management.
 
-- Les programmes eBPF peuvent être attachés à certains endroits spécifiques du noyau (tracepoints) pour collecter des informations en temps réel, permettant ainsi une analyse détaillée de l'exécution du système.
+- eBPF programs can be attached to specific locations in the kernel (tracepoints) to collect real-time information, allowing detailed analysis of system execution.
 
--  Les programmes eBPF peuvent être attachés aux points d'entrée ou de sortie de fonctions du noyau, permettant ainsi de créer des sondes de système (Kprobes) pour le débogage, la surveillance et d'autres tâches.
+- eBPF programs can be attached to entry or exit points of kernel functions, enabling the creation of system probes (Kprobes) for debugging, monitoring, and other tasks.
 
-- Les programmes eBPF peuvent être rattaché au module de sécurité linux (LSM) et influés sur le comportement du kernel. 
+- eBPF programs can be attached to the Linux Security Module (LSM) and influence the behavior of the kernel.
 
-- et bien plus encore.....
-
-
-## Installation
-
-Les outils et librairies qui seront principalement utilisés lors du projet sont :
-
-bpftool : https://github.com/libbpf/bpftool
-
-libbpf : https://github.com/libbpf/libbpf
-
-llvm / clang : https://github.com/llvm/llvm-project (déjà présent sur la majorité des distributions linux)
-
-il est également possible d'utiliser GCC à la place de clang  : https://github.com/gcc-mirror/gcc
+- and much more...
 
 
-## Sources
-
-ebpf.io ( pour les images ) : https://ebpf.io/
 
 
 
