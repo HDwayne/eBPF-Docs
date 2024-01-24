@@ -65,7 +65,8 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/my_path
 ```
 
 Now you can run 
-```sudo ldconfig my_path
+```
+sudo ldconfig my_path
 ```
 
 With that if you try to execute your code, it will work.
