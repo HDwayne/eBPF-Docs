@@ -36,7 +36,7 @@ Your installation should be complete, and you can now compile BPF code.
 
 ## Problem with the location of shared library
 
-If you try to execute this code, you will see this issue :
+If you try to execute your code, you will see this issue :
 ```
 sudo ./simple
 ./simple: error while loading shared libraries: libbpf.so.1: cannot open shared object file: No such file or directory
