@@ -44,32 +44,20 @@ sudo ./simple
 
 If this issue occurs, you just need to tell the opearting system where it can locate it at runtime.
 
-To do so, we will need to do those steps:
+To do so, we will need to execute those command:
 
-1. Find where the library is placed if you dont know it.
 ```
 sudo find / -name libbpf.so.1
 ```
-2. Check for the existence of the dynamic library path environment variable(`LD_LIBRARY_PATH`)
-```
-echo $LD_LIBRARY_PATH
-```
-If there is nothing to be displayed, add a default path value (or not if you wish to)
-```
-LD_LIBRARY_PATH=/my_path
-```
-where my_path is the path for the file libbpf.so.1 that you find with the previous command
-
-3. We add the desired path, export it and try the application.
-```
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/my_path
-```
-
-Now you can run 
+To find where the library is placed if you dont know it
 ```
 sudo ldconfig my_path
 ```
+Where `my_path` is the path for the file libbpf.so.1
 
-With that if you try to execute your code, it will work.
+
+With that if you try to execute your code, it will work. Otherwise, you can look at this forum to see if your problem is resolved :
+- [https://stackoverflow.com/questions/480764/linux-error-while-loading-shared-libraries-cannot-open-shared-object-file-no-s](https://stackoverflow.com/questions/480764/linux-error-while-loading-shared-libraries-cannot-open-shared-object-file-no-s)
+
 
 Congratulation, now you can make and execute instructions and code to use eBPF technology. 
