@@ -47,7 +47,8 @@ If this issue occurs, you just need to tell the opearting system where it can lo
 To do so, we will need to do those steps:
 
 1. Find where the library is placed if you dont know it.
-```sudo find / -name libbpf.so.1
+```
+sudo find / -name libbpf.so.1
 ```
 2. Check for the existence of the dynamic library path environment variable(`LD_LIBRARY_PATH`)
 ```
