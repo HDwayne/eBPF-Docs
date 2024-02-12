@@ -64,12 +64,15 @@ markdown_extensions:
       custom_checkbox: true
 
 nav:
-  - Welcome: 'index.md'
-  - Qu'est-ce qu'eBPF ?:
+  - What is eBPF?:
     - Introduction: 'introduction.md'
-    - Examples: 'examples.md'
     - Installation:
+      - linux: 'installation/linux.md'
       - WSL2: 'installation/wsl2.md'
+    - eBPF programs:
+      - Structure: 'eBPF_programs/structure_ebpf_program.md'
+      - Examples: 'eBPF_programs/examples.md'
+      - Events: 'eBPF_programs/events.md'
   
 
 copyright: |

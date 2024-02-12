@@ -30,7 +30,7 @@ At a minimum, you must include linux/bpf.h or vmlinux.h for your program to work
 
 Generally, maps are declared as follows:
 
-![im1](assets/map_example.png "Example de maps eBPF")
+![im1](../assets/map_example.png "Example de maps eBPF")
 
 - type: the type of the map
 - key: the index type used to access elements
@@ -49,7 +49,7 @@ The behavior of an eBPF program, as well as the helper functions that the eBPF p
 The type of eBPF programs is mostly specified just above the program's main function ( with SEC() ). The program is then associated with the ELF section bearing this name. This defines where the program can be attached and what type of data it will be able to act upon.
 
 
-![im1](assets/program_type_example.png "Example de type de programme")
+![im1](../assets/program_type_example.png "Example de type de programme")
 
 It's possible to specify the type of attachment ( event ) you want for our program depending on its type. The formats vary significantly depending on the program type. I invite you to consult the following page to get the complete list: https://www.kernel.org/doc/html/latest/bpf/libbpf/program_types.html#program-types-and-elf.
 
@@ -60,7 +60,7 @@ The program type and the event also determines the type of "context" (the functi
 
 Functions are the core of eBPF programs as they contain all the code that will be executed when the event associated with the program is captured. Each program has a context, which depends on the program type and the event it is associated with. The context contains information about the captured event and is passed as a parameter to the main function. 
 
-![im1](assets/context_example.png "Example de type de programme")
+![im1](../assets/context_example.png "Example de type de programme")
 
 Once again, the list of possible context types varies widely, and there is no site that lists them all. They are defined in different parts of the kernel headers. However, you can get an idea by visiting the following site: https://blogs.oracle.com/linux/post/bpf-a-tour-of-program-types
 
