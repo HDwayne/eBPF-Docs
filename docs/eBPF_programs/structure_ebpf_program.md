@@ -87,6 +87,8 @@ You can use Clang or GCC to do it. For example:
 
 In this example, we use the tool bpftool.
 
+( This is the sequence of operations that need to be performed, but the commands themselves do not work. The parameters used by bpftool depend on the program type.")
+
 First, we load the program into the kernel
 
     sudo bpftool prog load prog_name.o /sys/fs/bpf/prog_name
@@ -105,7 +107,7 @@ and finally, we attach the program using its previously retrieved ID:
 
 to detach the program and remove it from the kernel:
 
-    sudo bpftool net detach id
+    sudo bpftool prog detach id
 
 then
 
