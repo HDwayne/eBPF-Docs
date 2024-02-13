@@ -1,0 +1,1094 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../linux/">
+      
+      
+        <link rel="next" href="../../eBPF_programs/structure_ebpf_program/">
+      
+      
+      <link rel="icon" href="../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.9">
+    
+    
+      
+        <title>WSL2 - eBPF-MojitOS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.f2e4d321.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wsl2-installation-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="eBPF-MojitOS" class="md-header__button md-logo" aria-label="eBPF-MojitOS" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            eBPF-MojitOS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              WSL2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/HDwayne/eBPF-Docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    eBPF-Docs
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="eBPF-MojitOS" class="md-nav__button md-logo" aria-label="eBPF-MojitOS" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    eBPF-MojitOS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/HDwayne/eBPF-Docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    eBPF-Docs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    What is eBPF?
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            What is eBPF?
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    linux
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    WSL2
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    WSL2
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#compiling-the-wsl-kernel-and-obtaining-necessary-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compiling the WSL Kernel and Obtaining Necessary Headers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-wsl2-for-the-new-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring WSL2 for the New Kernel
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-with-bpftrace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test with bpftrace
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bpftool-and-libbpf" class="md-nav__link">
+    <span class="md-ellipsis">
+      bpftool and libbpf
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="bpftool and libbpf">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installing-llvm-and-clang" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing llvm and clang
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-libcap-and-libbfd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing libcap and libbfd
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-libbpf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing libbpf
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-bpftool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing bpftool
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    eBPF programs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            eBPF programs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../eBPF_programs/structure_ebpf_program/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Structure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../eBPF_programs/examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../eBPF_programs/events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#compiling-the-wsl-kernel-and-obtaining-necessary-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compiling the WSL Kernel and Obtaining Necessary Headers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-wsl2-for-the-new-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring WSL2 for the New Kernel
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-with-bpftrace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test with bpftrace
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bpftool-and-libbpf" class="md-nav__link">
+    <span class="md-ellipsis">
+      bpftool and libbpf
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="bpftool and libbpf">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installing-llvm-and-clang" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing llvm and clang
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-libcap-and-libbfd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing libcap and libbfd
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-libbpf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing libbpf
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-bpftool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing bpftool
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="wsl2-installation-guide">WSL2 Installation Guide</h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This guide is not exhaustive, and making modifications to the WSL kernel may lead to system instability, data corruption, and other potential issues. Proceed with caution and back up your data before attempting any changes.</p>
+</div>
+<p>Installing the eBPF technology along with essential tools such as bcc, bpftool, bpftrace, clang, and llvm on WSL2 can be a complex and time-consuming process. This guide provides a step-by-step overview of the installation process, explaining the purpose of each tool.</p>
+<h2 id="compiling-the-wsl-kernel-and-obtaining-necessary-headers">Compiling the WSL Kernel and Obtaining Necessary Headers</h2>
+<p>On WSL2, certain dependencies and packages required for this installation are not readily available through <code>apt-get</code>. the <code>linux-headers-$(uname -r)</code> package is not available through standard package managers like <code>apt-get</code>. Therefore, manual kernel compilation is necessary to generate the required headers for eBPF.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[23:47:05] [~/master_info/eBPF] ❱❱❱ sudo apt-get install linux-headers-$(uname -r)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>[sudo] password for dwayne:
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Reading package lists... Done
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Building dependency tree
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Reading state information... Done
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>E: Unable to locate package linux-headers-6.1.21.2-microsoft-standard-WSL2
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>E: Couldn&#39;t find any package by glob &#39;linux-headers-6.1.21.2-microsoft-standard-WSL2&#39;
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>E: Couldn&#39;t find any package by regex &#39;linux-headers-6.1.21.2-microsoft-standard-WSL2&#39;
+</span></code></pre></div>
+<p>Kernel headers are essential files that contain information about functions, structures, and constants used in the Linux kernel. They are crucial for building and compiling kernel modules, which are required for eBPF.</p>
+<p>Our objective is to compile the WSL kernel from <a href="https://github.com/microsoft/WSL2-Linux-Kernel">source</a> to generate the necessary header files for eBPF. Additionally, while eBPF has been available since kernel version 3.15, I recommend updating your kernel if it is too old to ensure full eBPF functionality. It's essential to be aware that eBPF features and tools may have evolved over time, and some features may require a more recent kernel version to work optimally.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can refer to the official <a href="https://github.com/iovisor/bcc/blob/master/docs/kernel-versions.md">bcc documentation</a> for specific details on which kernel versions support various eBPF features.</p>
+</div>
+<p>In my case, I chose to install the latest available Microsoft Linux kernel, which is <a href="https://learn.microsoft.com/en-us/community/content/wsl-user-msft-kernel-v6">version 6</a>. This ensures that I have access to all the latest eBPF capabilities and toolsets, providing a more robust and up-to-date development environment.</p>
+<ol>
+<li>
+<p>Clone the Microsoft Linux kernel repository from GitHub and switch to the kernel branch corresponding to version 6 (or desired kernel version)</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git clone https://github.com/microsoft/WSL2-Linux-Kernel.git --depth=1 -b linux-msft-wsl-6.1.y
+</span></code></pre></div>
+</li>
+<li>
+<p>Install the necessary packages required for kernel compilation</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo apt update &amp;&amp; sudo apt install build-essential flex bison libssl-dev libelf-dev
+</span></code></pre></div>
+</li>
+<li>
+<p>Compile the kernel. This process may take some time</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cd WSL2-Linux-Kernel
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a># Copy the WSL-specific configuration
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>cp Microsoft/config-wsl .config
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a># Compile the kernel with multiple cores for efficiency
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>LOCALVERSION= make -j$(nproc)
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a># Install kernel modules
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>sudo LOCALVERSION= make KCONFIG_CONFIG=Microsoft/config-wsl modules_install -j$(nproc)
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a># Install kernel headers
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>sudo make headers_install ARCH=x86_64 INSTALL_HDR_PATH=/usr
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a># Copy the compiled kernel image to a Windows-accessible location
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>cp arch/x86/boot/bzImage /mnt/c/
+</span></code></pre></div>
+</li>
+<li>
+<p>After the installation, verify that the kernel modules are correctly present</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>[22:55:39] [~] ❱❱❱ ls /lib/modules
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>6.1.21.2-microsoft-standard-WSL2
+</span></code></pre></div>
+</li>
+</ol>
+<h2 id="configuring-wsl2-for-the-new-kernel">Configuring WSL2 for the New Kernel</h2>
+<ol>
+<li>
+<p>Close the Terminal</p>
+<p>Ensure you've closed your current terminal.</p>
+</li>
+<li>
+<p>Create or Edit the WSL Configuration File</p>
+<p>On your Windows host machine, create or edit the file <code>%USERPROFILE%\.wslconfig</code> with the following content</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>[wsl2]
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>kernel=C:\\bzImage
+</span></code></pre></div>
+</li>
+<li>
+<p>Stop the WSL Instance</p>
+<p>Open PowerShell as Administrator, execute the following command to stop the WSL instance</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>wsl --shutdown
+</span></code></pre></div>
+</li>
+<li>
+<p>Check the Kernel Version</p>
+<p>After restarting your WSL instance, you can verify the kernel version with the following command. This command should confirm that you are now using the specified kernel image (<code>C:\\bzImage</code>) in your WSL2 environment</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>uname -r
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you encounter a "No such file or directory" error when trying to access '/sys/kernel/debug/tracing/', you can resolve this issue by running the following command:</p>
+</div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>mount -t debugfs none /sys/kernel/debug/
+</span></code></pre></div>
+<p>This command mounts the debug filesystem (<code>debugfs</code>) to the '/sys/kernel/debug/' directory, enabling proper access to debugging information required for working with eBPF and other tracing tools. Once this command is executed, you should be able to access debugging features without encountering the error.</p>
+</li>
+</ol>
+<h2 id="test-with-bpftrace">Test with bpftrace</h2>
+<p>Let's proceed with your first attempt using BPF. You can use bpftrace to test and trace events. Bpftrace is a tool that builds a simplified tracing language on top of eBPF and BCC, allowing you to implement complex tracing functions with just a few lines of simple scripts.</p>
+<ol>
+<li>
+<p>Install bpftrace using the following command</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sudo apt-get install bpftrace
+</span></code></pre></div>
+</li>
+<li>
+<p>Listing All Kernel Instruments and Tracepoints</p>
+<p>You can query all kernel instruments and tracepoints using the following command. </p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo bpftrace -l
+</span></code></pre></div>
+<p>This command will provide a list of available tracing points and instruments in the kernel, allowing you to choose the events you want to trace.</p>
+</li>
+<li>
+<p>Using bpftrace to Trace System Call Execution and Display Input Parameters</p>
+<p>To track the execution of a system call and display its input parameters, you can use the following bpftrace script</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo bpftrace -e &#39;tracepoint:syscalls:sys_enter_execve {join(args-&gt;argv);}&#39;
+</span></code></pre></div>
+<p>This script will trace the <code>execve</code> system call and display its input arguments, providing insights into the executed processes and their parameters.</p>
+</li>
+</ol>
+<h2 id="bpftool-and-libbpf">bpftool and libbpf</h2>
+<p>Let's proceed with the installation of bpftool and libbpf, along with the necessary dependencies such as libbfd, clang, llvm, and libcap.</p>
+<h3 id="installing-llvm-and-clang">Installing llvm and clang</h3>
+<p>First, let's install the latest versions of llvm and clang. Please note that these commands allow you to install <strong>all available versions</strong> of clang and llvm. It's not necessary to install all of them. </p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can refer to <a href="https://apt.llvm.org/">Automatic installation script</a> if you want to install a specific version directly.</p>
+</div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>wget https://apt.llvm.org/llvm.sh
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>sudo bash ./llvm.sh all
+</span></code></pre></div>
+<p>Next, we'll define the latest version of clang and llvm using the <code>update-alternatives</code> method. We'll use version 17. You can use the <a href="https://gist.github.com/junkdog/70231d6953592cd6f27def59fe19e50d">provided script</a> for this purpose:</p>
+<div class="language-bash highlight"><span class="filename">update-alternatives-clang.sh</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="ch">#!/usr/bin/env bash</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1">#     --slave /usr/bin/$1 $1 /usr/bin/$1-\${version} \\</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="k">function</span><span class="w"> </span>register_clang_version<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">version</span><span class="o">=</span><span class="nv">$1</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">priority</span><span class="o">=</span><span class="nv">$2</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span>update-alternatives<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">        </span>--verbose<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">        </span>--install<span class="w"> </span>/usr/bin/llvm-config<span class="w">          </span>llvm-config<span class="w">          </span>/usr/bin/llvm-config-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="si">${</span><span class="nv">priority</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-ar<span class="w">              </span>llvm-ar<span class="w">              </span>/usr/bin/llvm-ar-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-as<span class="w">              </span>llvm-as<span class="w">              </span>/usr/bin/llvm-as-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-bcanalyzer<span class="w">      </span>llvm-bcanalyzer<span class="w">      </span>/usr/bin/llvm-bcanalyzer-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-c-test<span class="w">          </span>llvm-c-test<span class="w">          </span>/usr/bin/llvm-c-test-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-cat<span class="w">             </span>llvm-cat<span class="w">             </span>/usr/bin/llvm-cat-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-cfi-verify<span class="w">      </span>llvm-cfi-verify<span class="w">      </span>/usr/bin/llvm-cfi-verify-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-cov<span class="w">             </span>llvm-cov<span class="w">             </span>/usr/bin/llvm-cov-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-cvtres<span class="w">          </span>llvm-cvtres<span class="w">          </span>/usr/bin/llvm-cvtres-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-cxxdump<span class="w">         </span>llvm-cxxdump<span class="w">         </span>/usr/bin/llvm-cxxdump-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-cxxfilt<span class="w">         </span>llvm-cxxfilt<span class="w">         </span>/usr/bin/llvm-cxxfilt-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-diff<span class="w">            </span>llvm-diff<span class="w">            </span>/usr/bin/llvm-diff-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-dis<span class="w">             </span>llvm-dis<span class="w">             </span>/usr/bin/llvm-dis-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-dlltool<span class="w">         </span>llvm-dlltool<span class="w">         </span>/usr/bin/llvm-dlltool-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-dwarfdump<span class="w">       </span>llvm-dwarfdump<span class="w">       </span>/usr/bin/llvm-dwarfdump-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-dwp<span class="w">             </span>llvm-dwp<span class="w">             </span>/usr/bin/llvm-dwp-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-27"><a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-exegesis<span class="w">        </span>llvm-exegesis<span class="w">        </span>/usr/bin/llvm-exegesis-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-28"><a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-extract<span class="w">         </span>llvm-extract<span class="w">         </span>/usr/bin/llvm-extract-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-29"><a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-lib<span class="w">             </span>llvm-lib<span class="w">             </span>/usr/bin/llvm-lib-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-30"><a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-link<span class="w">            </span>llvm-link<span class="w">            </span>/usr/bin/llvm-link-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-31"><a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-lto<span class="w">             </span>llvm-lto<span class="w">             </span>/usr/bin/llvm-lto-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-32"><a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-lto2<span class="w">            </span>llvm-lto2<span class="w">            </span>/usr/bin/llvm-lto2-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-33"><a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-mc<span class="w">              </span>llvm-mc<span class="w">              </span>/usr/bin/llvm-mc-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-34"><a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-mca<span class="w">             </span>llvm-mca<span class="w">             </span>/usr/bin/llvm-mca-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-35"><a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-modextract<span class="w">      </span>llvm-modextract<span class="w">      </span>/usr/bin/llvm-modextract-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-36"><a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-mt<span class="w">              </span>llvm-mt<span class="w">              </span>/usr/bin/llvm-mt-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-37"><a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-nm<span class="w">              </span>llvm-nm<span class="w">              </span>/usr/bin/llvm-nm-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-38"><a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-objcopy<span class="w">         </span>llvm-objcopy<span class="w">         </span>/usr/bin/llvm-objcopy-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-39"><a id="__codelineno-13-39" name="__codelineno-13-39" href="#__codelineno-13-39"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-objdump<span class="w">         </span>llvm-objdump<span class="w">         </span>/usr/bin/llvm-objdump-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-40"><a id="__codelineno-13-40" name="__codelineno-13-40" href="#__codelineno-13-40"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-opt-report<span class="w">      </span>llvm-opt-report<span class="w">      </span>/usr/bin/llvm-opt-report-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-41"><a id="__codelineno-13-41" name="__codelineno-13-41" href="#__codelineno-13-41"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-pdbutil<span class="w">         </span>llvm-pdbutil<span class="w">         </span>/usr/bin/llvm-pdbutil-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-42"><a id="__codelineno-13-42" name="__codelineno-13-42" href="#__codelineno-13-42"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-PerfectShuffle<span class="w">  </span>llvm-PerfectShuffle<span class="w">  </span>/usr/bin/llvm-PerfectShuffle-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-43"><a id="__codelineno-13-43" name="__codelineno-13-43" href="#__codelineno-13-43"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-profdata<span class="w">        </span>llvm-profdata<span class="w">        </span>/usr/bin/llvm-profdata-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-44"><a id="__codelineno-13-44" name="__codelineno-13-44" href="#__codelineno-13-44"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-ranlib<span class="w">          </span>llvm-ranlib<span class="w">          </span>/usr/bin/llvm-ranlib-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-45"><a id="__codelineno-13-45" name="__codelineno-13-45" href="#__codelineno-13-45"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-rc<span class="w">              </span>llvm-rc<span class="w">              </span>/usr/bin/llvm-rc-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-46"><a id="__codelineno-13-46" name="__codelineno-13-46" href="#__codelineno-13-46"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-readelf<span class="w">         </span>llvm-readelf<span class="w">         </span>/usr/bin/llvm-readelf-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-47"><a id="__codelineno-13-47" name="__codelineno-13-47" href="#__codelineno-13-47"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-readobj<span class="w">         </span>llvm-readobj<span class="w">         </span>/usr/bin/llvm-readobj-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-48"><a id="__codelineno-13-48" name="__codelineno-13-48" href="#__codelineno-13-48"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-rtdyld<span class="w">          </span>llvm-rtdyld<span class="w">          </span>/usr/bin/llvm-rtdyld-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-49"><a id="__codelineno-13-49" name="__codelineno-13-49" href="#__codelineno-13-49"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-size<span class="w">            </span>llvm-size<span class="w">            </span>/usr/bin/llvm-size-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-50"><a id="__codelineno-13-50" name="__codelineno-13-50" href="#__codelineno-13-50"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-split<span class="w">           </span>llvm-split<span class="w">           </span>/usr/bin/llvm-split-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-51"><a id="__codelineno-13-51" name="__codelineno-13-51" href="#__codelineno-13-51"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-stress<span class="w">          </span>llvm-stress<span class="w">          </span>/usr/bin/llvm-stress-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-52"><a id="__codelineno-13-52" name="__codelineno-13-52" href="#__codelineno-13-52"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-strings<span class="w">         </span>llvm-strings<span class="w">         </span>/usr/bin/llvm-strings-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-53"><a id="__codelineno-13-53" name="__codelineno-13-53" href="#__codelineno-13-53"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-strip<span class="w">           </span>llvm-strip<span class="w">           </span>/usr/bin/llvm-strip-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-54"><a id="__codelineno-13-54" name="__codelineno-13-54" href="#__codelineno-13-54"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-symbolizer<span class="w">      </span>llvm-symbolizer<span class="w">      </span>/usr/bin/llvm-symbolizer-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-55"><a id="__codelineno-13-55" name="__codelineno-13-55" href="#__codelineno-13-55"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-tblgen<span class="w">          </span>llvm-tblgen<span class="w">          </span>/usr/bin/llvm-tblgen-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-56"><a id="__codelineno-13-56" name="__codelineno-13-56" href="#__codelineno-13-56"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-undname<span class="w">         </span>llvm-undname<span class="w">         </span>/usr/bin/llvm-undname-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-57"><a id="__codelineno-13-57" name="__codelineno-13-57" href="#__codelineno-13-57"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llvm-xray<span class="w">            </span>llvm-xray<span class="w">            </span>/usr/bin/llvm-xray-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
+</span><span id="__span-13-58"><a id="__codelineno-13-58" name="__codelineno-13-58" href="#__codelineno-13-58"></a>
+</span><span id="__span-13-59"><a id="__codelineno-13-59" name="__codelineno-13-59" href="#__codelineno-13-59"></a>
+</span><span id="__span-13-60"><a id="__codelineno-13-60" name="__codelineno-13-60" href="#__codelineno-13-60"></a><span class="w">    </span>update-alternatives<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-61"><a id="__codelineno-13-61" name="__codelineno-13-61" href="#__codelineno-13-61"></a><span class="w">        </span>--verbose<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-62"><a id="__codelineno-13-62" name="__codelineno-13-62" href="#__codelineno-13-62"></a><span class="w">        </span>--install<span class="w"> </span>/usr/bin/clang<span class="w">                    </span>clang<span class="w">                   </span>/usr/bin/clang-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="si">${</span><span class="nv">priority</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-63"><a id="__codelineno-13-63" name="__codelineno-13-63" href="#__codelineno-13-63"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/clang++<span class="w">                  </span>clang++<span class="w">                 </span>/usr/bin/clang++-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w">  </span><span class="se">\</span>
+</span><span id="__span-13-64"><a id="__codelineno-13-64" name="__codelineno-13-64" href="#__codelineno-13-64"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/clang-format<span class="w">             </span>clang-format<span class="w">            </span>/usr/bin/clang-format-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w">  </span><span class="se">\</span>
+</span><span id="__span-13-65"><a id="__codelineno-13-65" name="__codelineno-13-65" href="#__codelineno-13-65"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/clang-cpp<span class="w">                </span>clang-cpp<span class="w">               </span>/usr/bin/clang-cpp-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-66"><a id="__codelineno-13-66" name="__codelineno-13-66" href="#__codelineno-13-66"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/asan_symbolize<span class="w">           </span>asan_symbolize<span class="w">          </span>/usr/bin/asan_symbolize-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-67"><a id="__codelineno-13-67" name="__codelineno-13-67" href="#__codelineno-13-67"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/bugpoint<span class="w">                 </span>bugpoint<span class="w">                </span>/usr/bin/bugpoint-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-68"><a id="__codelineno-13-68" name="__codelineno-13-68" href="#__codelineno-13-68"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/dsymutil<span class="w">                 </span>dsymutil<span class="w">                </span>/usr/bin/dsymutil-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-69"><a id="__codelineno-13-69" name="__codelineno-13-69" href="#__codelineno-13-69"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/lld<span class="w">                      </span>lld<span class="w">                     </span>/usr/bin/lld-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-70"><a id="__codelineno-13-70" name="__codelineno-13-70" href="#__codelineno-13-70"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/ld.lld<span class="w">                   </span>ld.lld<span class="w">                  </span>/usr/bin/ld.lld-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-71"><a id="__codelineno-13-71" name="__codelineno-13-71" href="#__codelineno-13-71"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/lld-link<span class="w">                 </span>lld-link<span class="w">                </span>/usr/bin/lld-link-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-72"><a id="__codelineno-13-72" name="__codelineno-13-72" href="#__codelineno-13-72"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/llc<span class="w">                      </span>llc<span class="w">                     </span>/usr/bin/llc-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-73"><a id="__codelineno-13-73" name="__codelineno-13-73" href="#__codelineno-13-73"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/lli<span class="w">                      </span>lli<span class="w">                     </span>/usr/bin/lli-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-74"><a id="__codelineno-13-74" name="__codelineno-13-74" href="#__codelineno-13-74"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/obj2yaml<span class="w">                 </span>obj2yaml<span class="w">                </span>/usr/bin/obj2yaml-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-75"><a id="__codelineno-13-75" name="__codelineno-13-75" href="#__codelineno-13-75"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/opt<span class="w">                      </span>opt<span class="w">                     </span>/usr/bin/opt-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-76"><a id="__codelineno-13-76" name="__codelineno-13-76" href="#__codelineno-13-76"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/sanstats<span class="w">                 </span>sanstats<span class="w">                </span>/usr/bin/sanstats-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-77"><a id="__codelineno-13-77" name="__codelineno-13-77" href="#__codelineno-13-77"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/verify-uselistorder<span class="w">      </span>verify-uselistorder<span class="w">     </span>/usr/bin/verify-uselistorder-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-78"><a id="__codelineno-13-78" name="__codelineno-13-78" href="#__codelineno-13-78"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/wasm-ld<span class="w">                  </span>wasm-ld<span class="w">                 </span>/usr/bin/wasm-ld-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-79"><a id="__codelineno-13-79" name="__codelineno-13-79" href="#__codelineno-13-79"></a><span class="w">        </span>--slave<span class="w">   </span>/usr/bin/yaml2obj<span class="w">                 </span>yaml2obj<span class="w">                    </span>/usr/bin/yaml2obj-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
+</span><span id="__span-13-80"><a id="__codelineno-13-80" name="__codelineno-13-80" href="#__codelineno-13-80"></a>
+</span><span id="__span-13-81"><a id="__codelineno-13-81" name="__codelineno-13-81" href="#__codelineno-13-81"></a><span class="o">}</span>
+</span><span id="__span-13-82"><a id="__codelineno-13-82" name="__codelineno-13-82" href="#__codelineno-13-82"></a>
+</span><span id="__span-13-83"><a id="__codelineno-13-83" name="__codelineno-13-83" href="#__codelineno-13-83"></a>register_clang_version<span class="w"> </span><span class="nv">$1</span><span class="w"> </span><span class="nv">$2</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>sudo bash ./update-alternatives-clang.sh 17 100
+</span></code></pre></div>
+<p>After running the script, clang and llvm should be properly set up. You can check their versions using the following commands:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>clang --version
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>llvm-strip --version
+</span></code></pre></div>
+<h3 id="installing-libcap-and-libbfd">Installing libcap and libbfd</h3>
+<p>Now, let's install libcap and libbfd along with their development packages</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sudo apt-get install -y libcap-dev libbfd-dev
+</span></code></pre></div>
+<h3 id="installing-libbpf">Installing libbpf</h3>
+<p>We also need to install libbpf</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>sudo apt-get install libbpf-dev
+</span></code></pre></div>
+<p>In case you encounter issues with this library, you may need to compile and install it manually. To do so, follow these steps</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>git clone https://github.com/libbpf/libbpf.git
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>cd ./libbpf/src
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>make
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>sudo make install
+</span></code></pre></div>
+<h3 id="installing-bpftool">Installing bpftool</h3>
+<p>Finally, to install bpftool, we need to compile and install it.  (i.e., during the build, all four dependencies should be green)</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>git clone --recurse-submodules https://github.com/libbpf/bpftool.git
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>cd src
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>make
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>sudo make install
+</span></code></pre></div>
+<p>Congratulations! Your installation should now be complete, and you can start developing with in Python with BCC and C using bpftool.</p>
+<hr />
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/community/content/wsl-user-msft-kernel-v6">https://learn.microsoft.com/en-us/community/content/wsl-user-msft-kernel-v6</a></li>
+<li><a href="https://gist.github.com/junkdog/70231d6953592cd6f27def59fe19e50d">https://gist.github.com/junkdog/70231d6953592cd6f27def59fe19e50d</a></li>
+<li><a href="https://www.cnblogs.com/hartmon/p/15935212.html">https://www.cnblogs.com/hartmon/p/15935212.html</a></li>
+<li><a href="https://github.com/microsoft/WSL2-Linux-Kernel">https://github.com/microsoft/WSL2-Linux-Kernel</a></li>
+<li><a href="https://github.com/libbpf/libbpf/">https://github.com/libbpf/libbpf/</a></li>
+<li><a href="https://github.com/iovisor/bcc/blob/master/INSTALL.md#wslwindows-subsystem-for-linux---binary">https://github.com/iovisor/bcc/blob/master/INSTALL.md#wslwindows-subsystem-for-linux---binary</a></li>
+<li><a href="[https://apt.llvm.org/">https://apt.llvm.org/</a></li>
+<li><a href="[https://oftime.net/2021/01/16/win-bpf/">https://oftime.net/2021/01/16/win-bpf/</a></li>
+<li><a href="https://blog.csdn.net/sinat_22338935/article/details/123002910">https://blog.csdn.net/sinat_22338935/article/details/123002910</a></li>
+<li><a href="https://blog.csdn.net/sinat_22338935/article/details/123005213">https://blog.csdn.net/sinat_22338935/article/details/123005213</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2024 <a href="https://github.com/HDwayne"  target="_blank" rel="noopener">Dwayne HERZBERG</a>,
+<a href="https://github.com/Florian-Dion"  target="_blank" rel="noopener">Florian Dion</a>,
+<a href="https://github.com/XenoSwifts"  target="_blank" rel="noopener">Guilhem Chevalier</a>,
+<a href="https://github.com/GrofZout"  target="_blank" rel="noopener"> Xavier Brun</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.path", "navigation.indexes", "content.code.copy"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      
+    
+  </body>
+</html>
