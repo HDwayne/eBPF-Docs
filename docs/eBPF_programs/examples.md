@@ -184,7 +184,8 @@ en gros, le programme affiche le contenu de la Hash-map toute les 1 seconde
 ---------------------------------------------------------------------------------------------------
 
 Pour utiliser un evenement du kernel, on peut aller voir la liste des evenements disponibles dans
-```sudo cat /sys/kernel/debug/tracing/available_events
+```
+sudo cat /sys/kernel/debug/tracing/available_events
 ```
 
 De la, on peut choisir l'evenement que l'on veut de la forme "type d'evenement : evenement"
