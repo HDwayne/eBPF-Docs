@@ -181,4 +181,103 @@ en gros, le programme affiche le contenu de la Hash-map toute les 1 seconde
 ( la Hash-map contient de éléments de type struct typeset)
 
 
+---------------------------------------------------------------------------------------------------
 
+Pour utiliser un evenement du kernel, on peut aller voir la liste des evenements disponibles dans
+```sudo cat /sys/kernel/debug/tracing/available_events
+```
+
+De la, on peut choisir l'evenement que l'on veut de la forme "type d'evenement : evenement"
+Ensuite, on peut modifier le code suivant pour utiliser l'evenement choisit :
+
+
+test.bpf.c
+```c
+#include "vmlinux.h"
+#include <bpf/bpf_helpers.h>
+#include <bpf/bpf_tracing.h>
+#include <bpf/bpf_core_read.h>
+
+
+
+struct my_syscalls_enter_sysinfo{
+	unsigned short common_type;
+	unsigned char common_flags;
+	unsigned char common_preempt_count;
+    int common_pid;
+    int syscall_nr;
+    void *info;
+};
+
+SEC("tp/syscalls/sys_enter_sysinfo")
+void testmdr(struct my_syscalls_enter_sysinfo *ctx){
+
+
+        bpf_printk("%d\n", ctx->common_pid);
+
+    
+}
+
+
+char LICENSE[] SEC("license") = "Dual BSD/GPL";
+```
+
+Nous devons remplacer SEC(tp/../..) par SEC(tp/type d'evenement/evenement)
+et remplacer la structure de données pour qu'elle corresponde au format de l'évenement.
+Pour récupérer le format de l'évenement il suffit de faire 
+```
+sudo cat /sys/kernel/tracing/events/type_de_l'event/l'event en question/format
+```
+
+Ainsi s'affichera le format de la structure de donnée de l'évenement.
+
+Quand les modifications sont faites, il suffit d'ajouter ces fichiers au dossier
+
+test.c
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+#include <bpf/libbpf.h>
+#include "test.skel.h"
+
+
+
+
+int main(void)
+{
+
+    struct test_bpf *skel = test_bpf__open();
+    test_bpf__load(skel);
+    test_bpf__attach(skel);
+
+
+	while(true){
+		sleep(1);
+	}
+
+    return 0;
+}
+```
+
+Makefile
+
+```
+BIN="test"
+
+all:
+	@bpftool btf dump file /sys/kernel/btf/vmlinux format c > vmlinux.h
+	@clang -g -O3 -target bpf -D__TARGET_ARCH_x86 -c $(BIN).bpf.c -o $(BIN).bpf.o
+	@bpftool gen skeleton $(BIN).bpf.o > $(BIN).skel.h
+	@clang $(BIN).c -lbpf -lelf -o $(BIN)
+
+.PHONY: clean
+clean:
+	@rm -rf *.o *.skel.h vmlinux.h $(BIN)
+```
+
+Il n'y a plus qu' compiler avec make, ce qui loadera le programme dans le kernel et attachera celui ci à l'évenement souhaité.
+Il faut ensuite execcuter le programme et pour afficher les prints, il faut regarder dans le trace_pipe à l'adresse 
+```
+sudo cat /sys/kernel/tracing/trace_pipe
+```
