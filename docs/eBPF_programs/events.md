@@ -8,4 +8,6 @@ POSSIBLE :
 
 - vmalloc and kmalloc: To access memory allocations infos
 
+- percpu : To access memory allocations info for cpu ( need to be verified )
+
 IMPOSSIBLE : 
